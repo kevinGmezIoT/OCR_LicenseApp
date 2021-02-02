@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "C:\\Users\\kevin\\Documents\\ProyectosProgramas\\Flutter\\ML_OCR_firebase\\firebase_ocr\\android\\CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\kevin\\AppData\\Local\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build C:\\Users\\kevin\\Documents\\ProyectosProgramas\\Flutter\\ML_OCR_firebase\\firebase_ocr\\android\\app\\.cxx\\cmake\\debug\\x86_64 --target clean"
+  ],
+  "libraries": {
+    "convertImage-Debug-x86_64": {
+      "artifactName": "convertImage",
+      "buildCommand": "C:\\Users\\kevin\\AppData\\Local\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build C:\\Users\\kevin\\Documents\\ProyectosProgramas\\Flutter\\ML_OCR_firebase\\firebase_ocr\\android\\app\\.cxx\\cmake\\debug\\x86_64 --target convertImage",
+      "abi": "x86_64",
+      "output": "C:\\Users\\kevin\\Documents\\ProyectosProgramas\\Flutter\\ML_OCR_firebase\\firebase_ocr\\build\\app\\intermediates\\cmake\\debug\\obj\\x86_64\\libconvertImage.so"
+    }
+  }
+}

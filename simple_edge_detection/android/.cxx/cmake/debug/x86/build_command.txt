@@ -1,0 +1,16 @@
+Executable : C:\Users\kevin\AppData\Local\Android\sdk\cmake\3.6.4111459\bin\cmake.exe
+arguments : 
+-HC:\Users\kevin\Documents\ProyectosProgramas\Flutter\Edge_Detect\simple_edge_detection\android
+-BC:\Users\kevin\Documents\ProyectosProgramas\Flutter\Edge_Detect\simple_edge_detection\android\.cxx\cmake\debug\x86
+-DANDROID_ABI=x86
+-DANDROID_PLATFORM=android-23
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=C:\Users\kevin\Documents\ProyectosProgramas\Flutter\ML_OCR_firebase\firebase_ocr\build\simple_edge_detection\intermediates\cmake\debug\obj\x86
+-DCMAKE_BUILD_TYPE=Debug
+-DANDROID_NDK=C:\Users\kevin\AppData\Local\Android\sdk\ndk\21.3.6528147
+-DCMAKE_CXX_FLAGS=-frtti -fexceptions -std=c++11
+-DCMAKE_TOOLCHAIN_FILE=C:\Users\kevin\AppData\Local\Android\sdk\ndk\21.3.6528147\build\cmake\android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=C:\Users\kevin\AppData\Local\Android\sdk\cmake\3.6.4111459\bin\ninja.exe
+-GAndroid Gradle - Ninja
+-DANDROID_STL=c++_shared
+jvmArgs : 
+

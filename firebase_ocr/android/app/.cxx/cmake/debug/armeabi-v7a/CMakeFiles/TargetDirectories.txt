@@ -1,0 +1,3 @@
+C:/Users/kevin/Documents/ProyectosProgramas/Flutter/ML_OCR_firebase/firebase_ocr/android/app/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+C:/Users/kevin/Documents/ProyectosProgramas/Flutter/ML_OCR_firebase/firebase_ocr/android/app/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/convertImage.dir
+C:/Users/kevin/Documents/ProyectosProgramas/Flutter/ML_OCR_firebase/firebase_ocr/android/app/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/edit_cache.dir
