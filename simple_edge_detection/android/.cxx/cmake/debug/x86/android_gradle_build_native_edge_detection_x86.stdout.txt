@@ -1,1 +1,2 @@
-ninja: no work to do.
+[1/2] Building CXX object CMakeFiles/native_edge_detection.dir/96560ab9208f3f1739a4f1b7d472adfb/Edge_Detect/simple_edge_detection/ios/Classes/edge_detector.cpp.o
+[2/2] Linking CXX shared library C:\Users\kevin\Documents\ProyectosProgramas\Flutter\ML_OCR_firebase\firebase_ocr\build\simple_edge_detection\intermediates\cmake\debug\obj\x86\libnative_edge_detection.so

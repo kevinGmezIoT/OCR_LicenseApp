@@ -149,7 +149,7 @@ struct DetectionResult *image_processing(char *str, char *out, char *out_merged,
 
     struct DetectionResult *coordinate = (struct DetectionResult *)malloc(sizeof(struct DetectionResult));
     
-    cv::Mat mat = cv::imread(str);
+    cv::Mat mat = cv::imread(str, IMREAD_COLOR);
 
     if (mat.size().width == 0 || mat.size().height == 0) {
         return create_detection_result(

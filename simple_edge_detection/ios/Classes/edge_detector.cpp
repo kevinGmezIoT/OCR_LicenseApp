@@ -118,61 +118,50 @@ cv::Mat EdgeDetector::debug_squares( cv::Mat image )
     return image;
 }
 
-vector<vector<cv::Point> > EdgeDetector::find_squares(Mat& image)
+vector<cv::Point> orderPoint(std::vector<Point> const& input)
 {
-    /*
-    vector<int> usedThresholdLevel;
-    vector<vector<Point> > squares;
+    vector<cv::Point> rect;
+    rect.push_back(Point(0, 0));
+    rect.push_back(Point(0, 0));
+    rect.push_back(Point(0, 0));
+    rect.push_back(Point(0, 0));
 
-    Mat gray0(image.size(), CV_8U), gray;
-    
-    cvtColor(image , gray, COLOR_BGR2GRAY);
-    medianBlur(gray, gray, 3);      // blur will enhance edge detection
-    vector<vector<cv::Point> > contours;
-
-    int thresholdLevels[] = {10, 30, 50, 70};
-    int erosion_size = 5;
-    cv::Mat element = cv::getStructuringElement(cv::MORPH_CROSS,
-        cv::Size(2 * erosion_size + 1, 2 * erosion_size + 1),
-        cv::Point(erosion_size, erosion_size));
-
-    for(int thresholdLevel : thresholdLevels) {
-        Canny(gray, gray0, thresholdLevel, thresholdLevel*3, 3);
-
-        dilate(gray0, gray0, element, Point(-1, -1));
-
-        findContours(gray0, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
-
-        vector<Point> approx;
-        for (const auto & contour : contours) {
-            approxPolyDP(Mat(contour), approx, arcLength(Mat(contour), true) * 0.1, true);
-
-            if (approx.size() == 4 && fabs(contourArea(Mat(approx))) > 1000 &&
-                isContourConvex(Mat(approx))) {
-                double maxCosine = 0;
-
-                for (int j = 2; j < 5; j++) {
-                    double cosine = fabs(get_cosine_angle_between_vectors(approx[j % 4], approx[j - 2], approx[j - 1]));
-                    maxCosine = MAX(maxCosine, cosine);
-                }
-
-                if (maxCosine < 0.3) {
-                    squares.push_back(approx);
-                    usedThresholdLevel.push_back(thresholdLevel);
-                }
-            }
-        }
+    vector<float> suma, resta;
+    for (int i = 0; i < input.size(); i++) {
+        suma.push_back(input.at(i).x + input.at(i).y);
+    }
+    for (int i = 0; i < suma.size(); i++) {
+        cout << suma.at(i);
+        cout << endl;
     }
 
-    return squares;
-    */
+    for (int i = 0; i < input.size(); i++) {
+        resta.push_back(input.at(i).x - input.at(i).y);
+    }
 
-   int erosion_size = 3;
+    cout << min_element(suma.begin(), suma.end())-suma.begin();
+    cout << endl;
+    cout << max_element(suma.begin(), suma.end())-suma.begin();
+    cout << endl;
+
+    rect.at(0) = input.at(min_element(suma.begin(), suma.end()) - suma.begin());
+    rect.at(2) = input.at(max_element(suma.begin(), suma.end()) - suma.begin());
+    rect.at(1) = input.at(min_element(resta.begin(), resta.end()) - resta.begin());
+    rect.at(3) = input.at(max_element(resta.begin(), resta.end()) - resta.begin());
+
+    return rect;
+}
+
+vector<vector<cv::Point> > EdgeDetector::find_squares(Mat& image)
+{   
+   /* 
+   int erosion_size = 5;
+    cv::Mat bilateral;
     cv::Mat element = cv::getStructuringElement(cv::MORPH_CROSS,
         cv::Size(2 * erosion_size + 1, 2 * erosion_size + 1),
         cv::Point(erosion_size, erosion_size));
     vector<vector<cv::Point> > contours;
-    vector<cv::Point> found;
+    vector<cv::Point> found,approx;
 
     cvtColor(image, image, COLOR_BGR2GRAY);
     GaussianBlur(image, image, Size(7, 7),0,0,0);
@@ -192,17 +181,90 @@ vector<vector<cv::Point> > EdgeDetector::find_squares(Mat& image)
         }        
     }
     
+    float epsilon = 0.1 * arcLength(found, true);
+    approxPolyDP(found, approx, epsilon, true);
+    vector<cv::Point> points = orderPoint(approx);
+
     RotatedRect minRect = minAreaRect(found);
     Mat boxPts;
     boxPoints(minRect, boxPts);
-    vector<vector<Point> > squares;
-    vector<Point> vBoxPts;  
+
+    vector<Point> vBoxPts, cornerPts;
 
     for (int y = 0; y < boxPts.rows; y++) {
         vBoxPts.push_back(cv::Point(boxPts.at<float>(y, 0), boxPts.at<float>(y, 1)));
     }
+
+    vector<cv::Point> sqrPoints = orderPoint(vBoxPts);
+
+    vector<vector<Point> > squares;
     
-    squares.push_back(vBoxPts); 
+    for (int y = 0; y < boxPts.rows; y++) {
+        cornerPts.push_back((sqrPoints[y] + points[y]) / 2);
+    }
+    
+    squares.push_back(cornerPts); 
+
+    return squares;
+    */
+   int erosion_size = 5;
+    cv::Mat blur, mask;
+    cv::Mat element = cv::getStructuringElement(cv::MORPH_CROSS,
+        cv::Size(2 * erosion_size + 1, 2 * erosion_size + 1),
+        cv::Point(erosion_size, erosion_size));
+    vector<vector<cv::Point> > contours;
+    vector<cv::Point> found, approx;
+    GaussianBlur(image, blur, Size(5, 5), 0, 0, 0);
+    cvtColor(blur, blur, COLOR_BGR2HSV);
+    inRange(blur, Scalar(21, 39, 64), Scalar(40, 255, 255), mask);
+    Canny(mask, mask, 30, 40, 3);
+    dilate(mask, mask, element);
+
+    findContours(mask, contours, RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+
+    int conteo = 0;
+    int iWidth = image.size().width;
+    int iHeight = image.size().height;
+    int area = iWidth * iHeight;
+
+    for (const auto& contour : contours) {
+        if (cv::contourArea(contour) >= area * 0.2 && cv::contourArea(contour) <= area * 0.8) {
+            found = contour;
+            break;
+        }
+        conteo++;
+    }
+    //cout << found;
+
+    float epsilon = 0.1 * arcLength(found, true);
+    approxPolyDP(found, approx, epsilon, true);
+    cout << approx;
+
+    vector<cv::Point> points = orderPoint(approx);
+    cout << points;
+
+    cv::cvtColor(mask, mask, CV_GRAY2BGR);    
+
+    RotatedRect minRect = minAreaRect(found);
+    Mat boxPts;
+    boxPoints(minRect, boxPts);
+    cout << endl << "boxPts " << endl << " " << boxPts << endl;
+
+    vector<Point> vBoxPts, cornerPts;
+
+    for (int y = 0; y < boxPts.rows; y++) {
+        vBoxPts.push_back(cv::Point(boxPts.at<float>(y, 0), boxPts.at<float>(y, 1)));
+    }
+
+    vector<cv::Point> sqrPoints = orderPoint(vBoxPts);
+
+    vector<vector<Point> > squares;
+    
+    for (int y = 0; y < boxPts.rows; y++) {
+        cornerPts.push_back((sqrPoints[y] + points[y]) / 2);
+    }
+    
+    squares.push_back(cornerPts); 
 
     return squares;
     
